@@ -8,8 +8,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import {
+  flushTrackerAutorunsForTests,
   getTrackerStubAutorunInvocationOrder,
   METEOR_TRACKER_VITEST_STUB,
+  resetTrackerAutorunRegistryForTests,
   resetTrackerStubAutorunQueue,
   Tracker,
 } from '../../stubs/meteor-tracker';
@@ -17,10 +19,12 @@ import {
 describe('meteor-tracker stub (Vitest)', () => {
   beforeEach(() => {
     resetTrackerStubAutorunQueue();
+    resetTrackerAutorunRegistryForTests();
   });
 
   afterEach(() => {
     resetTrackerStubAutorunQueue();
+    resetTrackerAutorunRegistryForTests();
   });
 
   it('экспортирует маркер модуля METEOR_TRACKER_VITEST_STUB', () => {
@@ -56,5 +60,17 @@ describe('meteor-tracker stub (Vitest)', () => {
       void 0;
     });
     expect(getTrackerStubAutorunInvocationOrder()).toEqual([1, 2]);
+  });
+
+  it('flushTrackerAutorunsForTests повторно вызывает все autorun', () => {
+    const a = vi.fn();
+    const b = vi.fn();
+    Tracker.autorun(a);
+    Tracker.autorun(b);
+    a.mockClear();
+    b.mockClear();
+    flushTrackerAutorunsForTests();
+    expect(a).toHaveBeenCalledTimes(1);
+    expect(b).toHaveBeenCalledTimes(1);
   });
 });

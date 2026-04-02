@@ -128,7 +128,7 @@ meteor run
 
 Ожидаемо в логе: `[TypeORM] DataSource initialized`, `=> App running at: http://localhost:3000/`.
 
-**Автопроверки** (зафиксировано на репозитории): `pnpm run type-check`, `tsc:check`, `lint:canary`, `format`, `check:circular-deps`, `pnpm run test` (**67** тестов). С покрытием: `pnpm exec vitest run --coverage imports/test/unit` — целевые файлы в отчёте 100%, артефакты `coverage/`, `test-results/results.json`.
+**Автопроверки** (зафиксировано на репозитории): `pnpm run type-check`, `tsc:check`, `lint:canary`, `format`, `check:circular-deps`, `pnpm run test` (юниты + **`imports/test/integration/app-flow.integration.test.ts`** — сквозной сценарий со стабами Minimongo/Tracker). С покрытием: `pnpm exec vitest run --coverage imports/test/unit` — целевые файлы в отчёте 100%, артефакты `coverage/`, `test-results/results.json`.
 
 Pre-push: `type-check` → `lint:canary` → `format:check` → `test` (`docs/commands.md`).
 

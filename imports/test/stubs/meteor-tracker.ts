@@ -24,10 +24,28 @@ export const METEOR_TRACKER_VITEST_STUB = true as const;
 const autorunInvocationOrder: number[] = [];
 let autorunSeq = 0;
 
+/** Колбэки, зарегистрированные через `Tracker.autorun` (для интеграционных тестов). */
+const autorunRegistry: (() => void)[] = [];
+
 /** Сбрасывает журнал порядка вызовов `Tracker.autorun`. */
 export function resetTrackerStubAutorunQueue(): void {
   autorunInvocationOrder.length = 0;
   autorunSeq = 0;
+}
+
+/** Сбрасывает реестр колбэков `autorun` (между тестами). */
+export function resetTrackerAutorunRegistryForTests(): void {
+  autorunRegistry.length = 0;
+}
+
+/**
+ * Повторно вызывает все зарегистрированные `Tracker.autorun` (имитация инвалидации Minimongo).
+ * Нужен для интеграционных тестов без реального Meteor: после `setStubData` вызвать flush — таблица перерисуется.
+ */
+export function flushTrackerAutorunsForTests(): void {
+  for (const fn of autorunRegistry) {
+    fn();
+  }
 }
 
 /**
@@ -47,6 +65,7 @@ export const Tracker = {
   autorun: (fn: () => void) => {
     const id = ++autorunSeq;
     autorunInvocationOrder.push(id);
+    autorunRegistry.push(fn);
     fn();
     return {
       stop: () => {
