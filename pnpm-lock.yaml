@@ -9,10 +9,10 @@ patchedDependencies:
     hash: 3032f3a47f33911d5c278ec6f2d4e0e4afc8f977baea1012613b13de23831c73
     path: patches/http-proxy@1.18.1.patch
   spdy-transport@3.0.0:
-    hash: 59579e9513affe2a08814c6e0c743a9a07316c61ba4c6a3c80c88580d4de5fa0
+    hash: 6bdb9286d711b71b9ef32f2f2b39b9bd0aa0193e380f96d46e8d43c8e75cb300
     path: patches/spdy-transport@3.0.0.patch
   spdy@4.0.2:
-    hash: 836f5cd65daeeaa6d513a382c6eccaadbba62aa95d13c5f77bf7cc6241d69c24
+    hash: d089f577d1ce65667bc096d28f748c8805980f944fdd991970f2b4e3c13075d7
     path: patches/spdy@4.0.2.patch
 
 importers:
@@ -9029,7 +9029,7 @@ snapshots:
       memory-pager: 1.5.0
     optional: true
 
-  spdy-transport@3.0.0(patch_hash=59579e9513affe2a08814c6e0c743a9a07316c61ba4c6a3c80c88580d4de5fa0):
+  spdy-transport@3.0.0(patch_hash=6bdb9286d711b71b9ef32f2f2b39b9bd0aa0193e380f96d46e8d43c8e75cb300):
     dependencies:
       debug: 4.4.3
       detect-node: 2.1.0
@@ -9040,13 +9040,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  spdy@4.0.2(patch_hash=836f5cd65daeeaa6d513a382c6eccaadbba62aa95d13c5f77bf7cc6241d69c24):
+  spdy@4.0.2(patch_hash=d089f577d1ce65667bc096d28f748c8805980f944fdd991970f2b4e3c13075d7):
     dependencies:
       debug: 4.4.3
       handle-thing: 2.0.1
       http-deceiver: 1.2.7
       select-hose: 2.0.0
-      spdy-transport: 3.0.0(patch_hash=59579e9513affe2a08814c6e0c743a9a07316c61ba4c6a3c80c88580d4de5fa0)
+      spdy-transport: 3.0.0(patch_hash=6bdb9286d711b71b9ef32f2f2b39b9bd0aa0193e380f96d46e8d43c8e75cb300)
     transitivePeerDependencies:
       - supports-color
 
@@ -9529,7 +9529,7 @@ snapshots:
       selfsigned: 2.4.1
       serve-index: 1.9.2
       sockjs: 0.3.24
-      spdy: 4.0.2(patch_hash=836f5cd65daeeaa6d513a382c6eccaadbba62aa95d13c5f77bf7cc6241d69c24)
+      spdy: 4.0.2(patch_hash=d089f577d1ce65667bc096d28f748c8805980f944fdd991970f2b4e3c13075d7)
       webpack-dev-middleware: 7.4.5(tslib@2.8.1)(webpack@5.105.4)
       ws: 8.20.0
     optionalDependencies:
