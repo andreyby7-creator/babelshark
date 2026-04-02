@@ -54,6 +54,8 @@ docker compose up -d
 meteor run
 ```
 
+**Переменные окружения:** шаблон — `.env.example`; при необходимости `cp .env.example .env` и экспорт в shell (Meteor сам `.env` не подгружает) — подробнее в [`docs/commands.md`](docs/commands.md).
+
 Открыть **http://localhost:3000/**. В логе: `[TypeORM] DataSource initialized`, `App running at`.
 
 Перед push / для ревью:
