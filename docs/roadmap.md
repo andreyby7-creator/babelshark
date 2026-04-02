@@ -128,15 +128,15 @@ meteor run
 
 Ожидаемо в логе: `[TypeORM] DataSource initialized`, `=> App running at: http://localhost:3000/`.
 
-**Автопроверки** (зафиксировано на репозитории): `pnpm run type-check`, `tsc:check`, `lint:canary`, `format`, `check:circular-deps`, `pnpm run test` (юниты + **`imports/test/integration/app-flow.integration.test.ts`** — сквозной сценарий со стабами Minimongo/Tracker). С покрытием: `pnpm exec vitest run --coverage imports/test/unit` — целевые файлы в отчёте 100%, артефакты `coverage/`, `test-results/results.json`.
+**Автопроверки** (зафиксировано на репозитории): `pnpm run type-check`, `tsc:check`, `lint:canary`, `format`, `check:circular-deps`, `pnpm run test` (юниты + **`imports/test/integration/app-flow.integration.test.ts`** — сквозной сценарий со стабами Minimongo/Tracker). С покрытием по unit-набору: `pnpm exec vitest run --coverage imports/test/unit` — целевые файлы в отчёте 100%, артефакты `coverage/`, `test-results/results.json`.
 
 Pre-push: `type-check` → `lint:canary` → `format:check` → `test` (`docs/commands.md`).
-
-Кэш и debounce в чек-листе п.3–4 — дублируются в `mutationObserver.test.ts`.
 
 ### Чек-лист в браузере
 
 1. Таблица из публикации; ячейки position с `__t` переводятся.
 2. MySQL: `UPDATE positions SET name = 'manager' WHERE id = 1;` — UI обновился.
-3. Повтор того же `source` — без лишних `Meteor.call` (кэш).
+3. Повтор того же `source` — без лишних `Meteor.call` (клиентский кэш в `mutationObserver`).
 4. Debounce: быстро добавить в `#tbody` несколько строк с `.__t` (например циклом в консоли) — ожидать 1–2 вызова `translatePosition`, не по одному на каждую строку.
+
+**Автотесты те же сценарии:** п.3 и п.4 закреплены в **`imports/test/unit/observer/mutationObserver.test.ts`** (кэш и debounce). Если `pnpm run test` проходит, эти пункты уже проверены в CI; ручной прогон в браузере остаётся для smoke с живой БД и визуальной уверенности, а не как замена тестам.

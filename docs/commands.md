@@ -27,8 +27,8 @@ MySQL: порт 3306, init — `private/init.sql`. Сброс данных: `doc
 ## Тесты
 
 ```bash
-pnpm run test
-pnpm exec vitest run --coverage imports/test/unit   # 67 тестов, coverage/ + test-results/
+pnpm run test                                       # все тесты (unit + integration)
+pnpm exec vitest run --coverage imports/test/unit   # только unit; coverage/, test-results/
 ```
 
 ## Прочее
