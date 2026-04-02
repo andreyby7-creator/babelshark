@@ -74,6 +74,28 @@ docker compose down         # Остановить контейнеры
 docker compose down -v      # Остановить и удалить volume mysql_data (полный сброс данных)
 ```
 
+## GitHub (CLI `gh`)
+
+Один раз: **`gh auth login -h github.com`** (если `gh auth status` ругается на токен).
+
+Создать репозиторий на GitHub и запушить **`main`** (если `origin` ещё нет — вызывается `gh repo create`; иначе только `git push`):
+
+```bash
+pnpm run repo:github
+```
+
+Публичное репо или другое имя:
+
+```bash
+GITHUB_REPO_VISIBILITY=public GITHUB_REPO_NAME=babelshark pnpm run repo:github
+```
+
+Эквивалент вручную:
+
+```bash
+gh repo create babelshark --private --source=. --remote=origin --push
+```
+
 ## Meteor
 
 Из корня репозитория:

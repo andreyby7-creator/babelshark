@@ -22,6 +22,7 @@
     "format": "dprint fmt",
     "format:check": "dprint check",
     "check:circular-deps": "madge --circular --extensions ts --ts-config tsconfig.madge.json imports server client",
+    "repo:github": "bash scripts/github-repo-push.sh",
     "prepare": "husky"
   },
   "devDependencies": {
