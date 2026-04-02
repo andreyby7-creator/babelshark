@@ -1,31 +1,35 @@
-# Правила защиты веток (рекомендации)
+# Защита веток — BabelShark
 
-Настройки для репозитория **BabelShark** на GitHub.
+Рекомендации для **[babelshark на GitHub](https://github.com/andreyby7-creator/babelshark)** (Meteor 3, TypeScript, Vitest, pnpm). Настройка: **Settings → Branches → Add branch protection rule**.
+
+В репозитории для тестового задания в CI и в этой заметке фигурирует только ветка **`main`**.
 
 ## Ветка `main`
 
-### Обязательные проверки (имена job в Actions)
+Workflows (`.github/workflows/*.yml`) запускаются на **push** и **pull_request** в **`main`**.
 
-- `ci` — workflow **CI**
-- `lint` — workflow **Lint**
-- `test` — workflow **Test**
-- `security` — workflow **Security**
+### Обязательные проверки (job id)
 
-### Рекомендуемые опции
+В UI проверки часто отображаются как **`Имя workflow / job`**, например `CI / ci`. В списке «required status checks» выбирайте те же имена, что показывает GitHub после первого успешного прогона.
 
-- Требовать pull request перед слиянием
-- Требовать одобрения (минимум 1 рецензент), при использовании CODEOWNERS — проверка владельцев
-- Отклонять устаревшие одобрения при новых коммитах
-- Запретить force-push и удаление ветки для `main`
+- **`ci`** (`ci.yml`, workflow **CI**) — `type-check` → `lint:canary` → `format:check` → `test` (полный прогон, как pre-push).
+- **`lint`** (`lint.yml`) — то же по линту/формату, но **только** если менялись `*.ts`/`*.js` или `eslint.config.mjs` / `dprint.json`.
+- **`test`** (`test.yml`) — Vitest **только** при изменениях в тестах/исходниках по path filter.
+- **`security`** (`security.yml`) — `pnpm run audit` (`--prod`).
 
-## Ветка `develop`
+**Практичный минимум для merge:** отметить **`ci`** (или `CI / ci`) — он всегда запускается на push/PR в **`main`** без path filters.
 
-Те же проверки, что и для `main`, или подмножество (на усмотрение команды).
+**Lint** и **Test** из-за `paths:` на части PR **не стартуют**; если сделать их обязательными в правиле, GitHub может требовать их даже когда workflow не бежал — уточняйте поведение в своей версии UI или ограничьтесь job **`ci`** + при желании **`security`**.
 
-## Функциональные ветки (`feature/*`, `fix/*`)
+### Остальные опции (по желанию)
 
-Обычно разрешают force-push для rebase.
+- Требовать pull request перед слиянием в `main`
+- Требовать ревью (для соло-репозитория можно не включать)
+- С **CODEOWNERS** — опционально автозапрос ревью
+- Сбрасывать approve при новых коммитах
+- Запретить force-push и удаление `main`
 
-## Настройка в UI
+## Связанные файлы
 
-**Settings → Branches → Add rule** для шаблона ветки, включить **Require status checks to pass** и отметить перечисленные job.
+- Описание workflows: [`.github/README.md`](README.md)
+- Локальные команды: [`docs/commands.md`](../docs/commands.md)

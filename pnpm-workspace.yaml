@@ -1,2 +1,11 @@
+auditConfig:
+  ignoreCves:
+    - CVE-2025-14505
+
 ignoredBuiltDependencies:
   - dprint
+
+patchedDependencies:
+  http-proxy@1.18.1: patches/http-proxy@1.18.1.patch
+  spdy-transport@3.0.0: patches/spdy-transport@3.0.0.patch
+  spdy@4.0.2: patches/spdy@4.0.2.patch

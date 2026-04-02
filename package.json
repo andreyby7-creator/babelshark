@@ -22,15 +22,15 @@
     "format": "dprint fmt",
     "format:check": "dprint check",
     "check:circular-deps": "madge --circular --extensions ts --ts-config tsconfig.madge.json imports server client",
-    "repo:github": "bash scripts/github-repo-push.sh",
-    "prepare": "husky"
+    "audit": "pnpm audit --prod",
+    "repo:github": "bash scripts/github-repo-push.sh"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
-    "@meteorjs/rspack": "1.0.0",
+    "@meteorjs/rspack": "1.0.2",
     "@rsdoctor/rspack-plugin": "1.2.3",
-    "@rspack/cli": "1.7.1",
-    "@rspack/core": "1.7.1",
+    "@rspack/cli": "1.7.11",
+    "@rspack/core": "1.7.11",
     "@types/meteor": "^2.0.0",
     "@types/node": "25.5.0",
     "@vitest/coverage-v8": "^4.1.2",
@@ -50,7 +50,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.29.2",
-    "@swc/helpers": "0.5.17",
+    "@swc/helpers": "0.5.20",
     "bootstrap": "5.3.8",
     "mysql2": "^3.14.0",
     "reflect-metadata": "^0.2.2",

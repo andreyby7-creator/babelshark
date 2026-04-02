@@ -11,20 +11,18 @@
 │   ├── lint.yml      # То же для PR при изменениях в TS/JS и конфигах линтера
 │   ├── test.yml      # Vitest при изменениях в тестах и исходниках
 │   └── security.yml  # pnpm audit (еженедельно и по событиям)
-├── ISSUE_TEMPLATE/
 ├── dependabot.yml
+├── BRANCH_PROTECTION.md
 ├── CODEOWNERS
 └── README.md
 ```
 
 ## Пайплайны
 
-| Workflow   | Назначение |
-|-----------|------------|
-| **CI**    | Единая проверка перед merge: `type-check` → `lint:canary` → `format:check` → `test` |
-| **Lint**  | Ускоренный запуск при правках только в области линтинга/форматирования |
-| **Test**  | Запуск Vitest при изменениях в `imports/test` и связанных путях |
-| **Security** | `pnpm audit --audit-level moderate` |
+- **CI** — единая проверка перед merge: `type-check` → `lint:canary` → `format:check` → `test`.
+- **Lint** — ускоренный прогон при правках в TS/JS и конфигах линтера/форматтера (см. `paths:` в `lint.yml`).
+- **Test** — Vitest при изменениях в `imports/test` и связанных путях (см. `paths:` в `test.yml`).
+- **Security** — `pnpm run audit` (`pnpm audit --prod`).
 
 В CI для `pnpm install` выставлено `HUSKY=0`, чтобы не трогать git-hooks на раннере.
 
@@ -34,4 +32,4 @@
 
 ## Ветки
 
-Рекомендуемые правила защиты — см. `BRANCH_PROTECTION.md`.
+Workflows завязаны только на **`main`** (push / pull_request). Правила защиты ветки — см. [`BRANCH_PROTECTION.md`](BRANCH_PROTECTION.md).

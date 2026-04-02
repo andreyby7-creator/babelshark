@@ -1,9 +1,6 @@
-Документ задаёт **порядок работ** по ТЗ (тестовая задача Meteor + MySQL + TS + MutationObserver):
+**Назначение:** пофазовый план и приёмка по ТЗ (ограничения, файлы, чек-лист). Обзор проекта, стек и быстрый старт — в корневом **[`README.md`](../README.md)**.
 
-- без лишней архитектуры;
-- реактивность customers/positions — только pub/sub `vlasky:mysql`;
-- TypeORM **Active Record** — чтение `translations` через `Translation.findOneBy` после `Translation.useDataSource` в `initTypeORM`, метод `translatePosition`;
-- `MutationObserver` без зацикливания и спама `Meteor.call()`.
+Порядок работ: Meteor + MySQL + TS; customers/positions только через `vlasky:mysql`; TypeORM — `translations` + `translatePosition`; `MutationObserver` с кэшем/debounce без спама `Meteor.call`.
 
 ### 0 Принципы ✅
 
@@ -85,7 +82,7 @@ docker compose down -v && docker compose up -d
 
 **Проверка:** `mutationObserver.test.ts`.
 
-Связка: в `client/main.ts` после `renderTable()` вызывается `initObserver()`; полный E2E с БД — Фаза 9.
+В `client/main.ts` после `renderTable()` — `initObserver()`; E2E с БД — фаза 9.
 
 ---
 
@@ -103,9 +100,9 @@ CDN в `client/main.html` не нужен, пока CSS из npm.
 
 ## Фаза 7 — Entrypoints ✅
 
-- **`client/main.html`** — только `<head>` + `<body>` (`static-html`); `#app` в `<main>`, см. файл.
-- **`client/main.ts`** — Bootstrap CSS (side-effect), затем `Meteor.startup`: `renderTable`, `initObserver` с `try/catch` (полный код в файле).
-- **`server/main.ts`** — импорт methods/publications; `Meteor.startup`: `initTypeORM` (полный код в файле).
+- `client/main.html` — `static-html`, `#app` в `<main>`.
+- `client/main.ts` — Bootstrap CSS, `Meteor.startup`: `renderTable`, `initObserver` (`try/catch`).
+- `server/main.ts` — methods/publications; `Meteor.startup`: `initTypeORM`.
 
 ---
 
@@ -120,30 +117,26 @@ CDN в `client/main.html` не нужен, пока CSS из npm.
 
 ---
 
-## Фаза 9 — Приёмка вручную 🟡
+## Фаза 9 — Приёмка ✅
 
-Код по фазам **0–8** готов. Полный прогон — MySQL + `meteor run` + браузер.
+**Локально (хост):**
 
-**Автоматика:** Husky pre-push — `type-check` → `lint:canary` → `format:check` → `test` (`docs/commands.md`). Дополнительно при необходимости: `pnpm run build`.
-
-**Проверено:** `docker compose up -d`; `meteor run` — в логе `[TypeORM] DataSource initialized`, `=> App running at: http://localhost:3000/`. **Автотесты:** pre-push (`type-check`, `lint:canary`, `format:check`, `test`) — **62** теста. Кэш и debounce (п.4–5) — `mutationObserver.test.ts`. **В браузере вручную:** п.2–5 чек-листа (таблица/переводы, `UPDATE positions`, кэш, debounce в консоли).
-
-### Чек-лист
-
-1. `docker compose up -d`, затем `meteor run`.
-2. Таблица, данные из публикации, ячейки position с `__t` переводятся.
-3. В MySQL: `UPDATE positions SET name = 'manager' WHERE id = 1;` — UI обновился, observer отработал.
-4. Повторный перевод того же нормализованного `source` — без лишнего `Meteor.call` (кэш).
-5. Debounce: в консоли браузера после появления `#tbody`:
-
-```ts
-for (let i = 0; i < 10; i++) {
-  document.querySelector('#tbody')!.innerHTML += `<tr>
-    <td>99</td>
-    <td>Test</td>
-    <td class="__t">manager</td>
-  </tr>`;
-}
+```bash
+docker compose up -d
+meteor run
 ```
 
-Ожидание: не 10 вызовов `translatePosition`, а 1–2 (пачка).
+Ожидаемо в логе: `[TypeORM] DataSource initialized`, `=> App running at: http://localhost:3000/`.
+
+**Автопроверки** (зафиксировано на репозитории): `pnpm run type-check`, `tsc:check`, `lint:canary`, `format`, `check:circular-deps`, `pnpm run test` (**67** тестов). С покрытием: `pnpm exec vitest run --coverage imports/test/unit` — целевые файлы в отчёте 100%, артефакты `coverage/`, `test-results/results.json`.
+
+Pre-push: `type-check` → `lint:canary` → `format:check` → `test` (`docs/commands.md`).
+
+Кэш и debounce в чек-листе п.3–4 — дублируются в `mutationObserver.test.ts`.
+
+### Чек-лист в браузере
+
+1. Таблица из публикации; ячейки position с `__t` переводятся.
+2. MySQL: `UPDATE positions SET name = 'manager' WHERE id = 1;` — UI обновился.
+3. Повтор того же `source` — без лишних `Meteor.call` (кэш).
+4. Debounce: быстро добавить в `#tbody` несколько строк с `.__t` (например циклом в консоли) — ожидать 1–2 вызова `translatePosition`, не по одному на каждую строку.

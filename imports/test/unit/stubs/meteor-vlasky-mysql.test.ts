@@ -32,10 +32,28 @@ describe('meteor-vlasky-mysql stub (Vitest)', () => {
     expect(db.__VITEST_VLASKY_MYSQL_STUB).toBe(true);
   });
 
+  it('LiveMysqlKeySelector.Index / Columns / Func — вложенные key selector вызываются', () => {
+    const idxKs = LiveMysqlKeySelector.Index();
+    expect(idxKs(undefined)).toEqual({});
+
+    const colKs = LiveMysqlKeySelector.Columns(['_id', 'name']);
+    expect(colKs(undefined)).toEqual({});
+
+    const funcKs = LiveMysqlKeySelector.Func((_row, i) => `k${String(i)}`);
+    expect(funcKs(undefined)).toEqual({});
+  });
+
   it('select без set возвращает пустой массив (как cursor-заглушка)', () => {
     const db = new LiveMysql({});
     expect(db.select('SELECT 1', undefined, LiveMysqlKeySelector.Index(), [...stubTriggers]))
       .toEqual([]);
+  });
+
+  it('select с minInterval (5-й аргумент) обрабатывается', () => {
+    const db = new LiveMysql({});
+    expect(
+      db.select('SELECT 1', undefined, LiveMysqlKeySelector.Index(), [...stubTriggers], 50),
+    ).toEqual([]);
   });
 
   it('setVlaskyMysqlStubSelectRows задаёт строки, reset очищает', () => {

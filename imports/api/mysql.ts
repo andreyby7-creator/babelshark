@@ -60,4 +60,6 @@ export const db = new LiveMysql({
   user: process.env['DB_USER'] ?? 'root',
   password: process.env['DB_PASS'] ?? 'root',
   database: process.env['DB_NAME'] ?? 'babel',
+  /** Явно utf8mb4: иначе при русском в БД возможна «кракозябра» (UTF-8 как latin1). */
+  charset: 'utf8mb4',
 });

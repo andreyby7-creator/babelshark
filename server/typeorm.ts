@@ -13,6 +13,7 @@
  * - Production logger не подключаем: для тестового достаточно `console.*`.
  * - После `initialize()` вызывается `Translation.useDataSource(AppDataSource)` (Active Record по ТЗ); при `destroy` — `useDataSource(null)`.
  * - **`connectorPackage: 'mysql2'`** — MySQL 8 / `caching_sha2_password`; старый npm-пакет `mysql` в проекте не используем.
+ * - **`charset: 'utf8mb4'`** — чтобы `translations` с Unicode читались без искажений.
  * - Порт задаётся через **`DB_PORT`** (как в `imports/api/mysql.ts` для `vlasky:mysql`).
  */
 
@@ -47,6 +48,7 @@ export const AppDataSource = new DataSource({
   username: dbUser,
   password: dbPass,
   database: dbName,
+  charset: 'utf8mb4',
   entities: [Translation],
   synchronize: false,
 });

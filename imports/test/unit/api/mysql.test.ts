@@ -141,6 +141,7 @@ interface MysqlOpts {
   user: string;
   password: string;
   database: string;
+  charset: string;
 }
 
 type EnvPatch = Partial<Record<EnvKey, string | undefined>>;
@@ -221,6 +222,7 @@ describe('mysql.ts (vlasky:mysql config)', () => {
       user: 'root',
       password: 'root',
       database: 'babel',
+      charset: 'utf8mb4',
     });
     expect(logSpy).not.toHaveBeenCalled();
   });
@@ -279,6 +281,7 @@ describe('mysql.ts (vlasky:mysql config)', () => {
       user: 'app',
       password: 'secret',
       database: 'appdb',
+      charset: 'utf8mb4',
     });
   });
 

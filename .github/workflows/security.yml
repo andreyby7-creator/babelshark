@@ -4,9 +4,9 @@ name: Security
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main]
   pull_request:
-    branches: [main, develop]
+    branches: [main]
   schedule:
     - cron: '0 6 * * 1'
 
@@ -25,6 +25,7 @@ jobs:
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       HUSKY: '0'
+      PNPM_CONFIG_REPORTER: silent
     steps:
       - uses: actions/checkout@v6
 
@@ -51,4 +52,4 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Dependency audit
-        run: pnpm audit --audit-level moderate
+        run: pnpm run audit

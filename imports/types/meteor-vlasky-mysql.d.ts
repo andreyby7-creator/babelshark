@@ -30,6 +30,8 @@ declare module 'meteor/vlasky:mysql' {
     readonly database?: string;
     /** Порт MySQL (часто 3306). */
     readonly port?: number;
+    /** Кодировка соединения (как в mysql2), например `utf8mb4`. */
+    readonly charset?: string;
   }
 
   /** Триггер binlog для `LiveMysql#select` (минимум `table`). */

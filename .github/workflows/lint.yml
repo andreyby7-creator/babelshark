@@ -4,7 +4,7 @@ name: Lint
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main]
     paths:
       - '**.ts'
       - '**.tsx'
@@ -13,7 +13,7 @@ on:
       - 'eslint.config.mjs'
       - 'dprint.json'
   pull_request:
-    branches: [main, develop]
+    branches: [main]
     paths:
       - '**.ts'
       - '**.tsx'
@@ -33,6 +33,7 @@ jobs:
       CI: 'true'
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       HUSKY: '0'
+      PNPM_CONFIG_REPORTER: silent
     steps:
       - uses: actions/checkout@v6
 

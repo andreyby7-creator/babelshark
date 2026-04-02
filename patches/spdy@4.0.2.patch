@@ -1,0 +1,34 @@
+diff --git a/lib/spdy/agent.js b/lib/spdy/agent.js
+index 4adc524e1252471f42b74b2addea80499d457a40..83764508bf18502b6231425bfa799a90ce18124f 100644
+--- a/lib/spdy/agent.js
++++ b/lib/spdy/agent.js
+@@ -8,10 +8,8 @@ var util = require('util')
+ var transport = require('spdy-transport')
+ var debug = require('debug')('spdy:client')
+ 
+-// Node.js 0.10 and 0.12 support
+-Object.assign = process.versions.modules >= 46
+-  ? Object.assign // eslint-disable-next-line
+-  : util._extend
++// Prefer native Object.assign; avoid util._extend (deprecated in Node 24+).
++Object.assign = typeof Object.assign === 'function' ? Object.assign : util._extend
+ 
+ var EventEmitter = require('events').EventEmitter
+ 
+diff --git a/lib/spdy/server.js b/lib/spdy/server.js
+index 1889fcd2dd830c5dfb76fbb4abb49871a3986fd2..bb6059f34d550b158b523227d3ac8becaeb24fa6 100644
+--- a/lib/spdy/server.js
++++ b/lib/spdy/server.js
+@@ -11,10 +11,8 @@ var transport = require('spdy-transport')
+ var debug = require('debug')('spdy:server')
+ var EventEmitter = require('events').EventEmitter
+ 
+-// Node.js 0.8, 0.10 and 0.12 support
+-Object.assign = process.versions.modules >= 46
+-  ? Object.assign // eslint-disable-next-line
+-  : util._extend
++// Prefer native Object.assign; avoid util._extend (deprecated in Node 24+).
++Object.assign = typeof Object.assign === 'function' ? Object.assign : util._extend
+ 
+ var spdy = require('../spdy')
+ 

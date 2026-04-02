@@ -4,9 +4,9 @@ name: CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main]
   pull_request:
-    branches: [main, develop]
+    branches: [main]
 
 permissions:
   contents: read
@@ -23,6 +23,7 @@ jobs:
       CI: 'true'
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       HUSKY: '0'
+      PNPM_CONFIG_REPORTER: silent
     steps:
       - uses: actions/checkout@v6
 

@@ -1,6 +1,80 @@
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 type OnceListener = (...args: unknown[]) => void;
+
+/** Мок `typeorm` с сохранением опций конструктора (проверка env → port/host). */
+function mockTypeormDataSource() {
+  vi.doMock('typeorm', () => ({
+    DataSource: class DataSource {
+      public isInitialized = false;
+      public initialize = vi.fn(() => Promise.resolve());
+      public destroy = vi.fn(() => Promise.resolve());
+      public options: unknown;
+      public constructor(options: unknown) {
+        this.options = options;
+      }
+    },
+  }));
+}
+
+function mockTranslationEntity() {
+  vi.doMock('/imports/api/entities/Translation', () => ({
+    Translation: { useDataSource: vi.fn() },
+  }));
+}
+
+describe('server/typeorm.ts (конфиг порта из DB_PORT)', () => {
+  const snapshotDbPort = process.env['DB_PORT'];
+
+  afterEach(() => {
+    if (snapshotDbPort === undefined) delete process.env['DB_PORT'];
+    else process.env['DB_PORT'] = snapshotDbPort;
+  });
+
+  it('DB_PORT не задан → порт 3306 в DataSource', async () => {
+    vi.resetModules();
+    delete process.env['DB_PORT'];
+    mockTypeormDataSource();
+    mockTranslationEntity();
+    const { AppDataSource } = await import('../../../../server/typeorm');
+    expect(
+      (AppDataSource as unknown as { options: { port: number; }; }).options.port,
+    ).toBe(3306);
+  });
+
+  it('DB_PORT пустая строка → порт 3306', async () => {
+    vi.resetModules();
+    process.env['DB_PORT'] = '';
+    mockTypeormDataSource();
+    mockTranslationEntity();
+    const { AppDataSource } = await import('../../../../server/typeorm');
+    expect(
+      (AppDataSource as unknown as { options: { port: number; }; }).options.port,
+    ).toBe(3306);
+  });
+
+  it('DB_PORT валидный → используется в DataSource', async () => {
+    vi.resetModules();
+    process.env['DB_PORT'] = '3308';
+    mockTypeormDataSource();
+    mockTranslationEntity();
+    const { AppDataSource } = await import('../../../../server/typeorm');
+    expect(
+      (AppDataSource as unknown as { options: { port: number; }; }).options.port,
+    ).toBe(3308);
+  });
+
+  it('DB_PORT невалидный (0) → fallback 3306', async () => {
+    vi.resetModules();
+    process.env['DB_PORT'] = '0';
+    mockTypeormDataSource();
+    mockTranslationEntity();
+    const { AppDataSource } = await import('../../../../server/typeorm');
+    expect(
+      (AppDataSource as unknown as { options: { port: number; }; }).options.port,
+    ).toBe(3306);
+  });
+});
 
 describe('server/typeorm.ts (TypeORM singleton)', () => {
   it('initTypeORM: инициализирует DataSource, вызывает Translation.useDataSource, логирует успех', async () => {

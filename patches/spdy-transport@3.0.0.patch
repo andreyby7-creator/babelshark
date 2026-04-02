@@ -1,0 +1,17 @@
+diff --git a/lib/spdy-transport/utils.js b/lib/spdy-transport/utils.js
+index 7f379f256e1681037fb613be7a91e0d1f8913a31..cff103fd566584a6d0cad2235919aef702109dc4 100644
+--- a/lib/spdy-transport/utils.js
++++ b/lib/spdy-transport/utils.js
+@@ -3,10 +3,8 @@
+ var util = require('util')
+ var isNode = require('detect-node')
+ 
+-// Node.js 0.8, 0.10 and 0.12 support
+-Object.assign = (process.versions.modules >= 46 || !isNode)
+-  ? Object.assign // eslint-disable-next-line
+-  : util._extend
++// Prefer native Object.assign; avoid util._extend (deprecated in Node 24+).
++Object.assign = typeof Object.assign === 'function' ? Object.assign : util._extend
+ 
+ function QueueItem () {
+   this.prev = null
