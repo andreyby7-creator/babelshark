@@ -1,0 +1,22 @@
+<!--
+  @file HTML entrypoint (клиент Meteor)
+
+  Notes:
+  - DOCTYPE / корень документа задаёт Meteor — для static-html допустимы только фрагменты `<head>` / `<body>` / `<template>`.
+  - `data-root="app"` — стабильный семантический корень для скриптов (MutationObserver и таблица).
+-->
+<head>
+  <!-- Базовые метаданные -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BabelShark</title>
+</head>
+
+<body>
+  <!-- Основной контент -->
+  <main role="main">
+    <!-- container для рендера Vue/React/Meteor -->
+    <!-- id="app" совпадает с data-root="app" для обратной совместимости скриптов -->
+    <div id="app" class="container mt-4" data-root="app"></div>
+  </main>
+</body>

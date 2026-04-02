@@ -1,0 +1,17 @@
+# Глобальные владельцы
+* @andreyby7-creator
+
+# Сервер и API
+server/ @andreyby7-creator
+imports/api/ @andreyby7-creator
+
+# Клиент и UI
+client/ @andreyby7-creator
+imports/ui/ @andreyby7-creator
+
+# Тесты и типы
+imports/test/ @andreyby7-creator
+imports/types/ @andreyby7-creator
+
+# Документация
+docs/ @andreyby7-creator

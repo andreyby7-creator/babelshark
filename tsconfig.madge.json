@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "/imports/*": ["imports/*"],
+      "meteor/meteor": ["imports/test/stubs/meteor-meteor.ts"],
+      "meteor/mongo": ["imports/test/stubs/meteor-mongo.ts"],
+      "meteor/tracker": ["imports/test/stubs/meteor-tracker.ts"],
+      "meteor/vlasky:mysql": ["imports/test/stubs/meteor-vlasky-mysql.ts"]
+    }
+  }
+}

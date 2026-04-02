@@ -1,0 +1,58 @@
+{
+  "name": "babelshark",
+  "private": true,
+  "packageManager": "pnpm@10.28.2",
+  "engines": {
+    "node": "24.12.0",
+    "pnpm": "10.28.2"
+  },
+  "meteor": {
+    "mainModule": {
+      "client": "client/main.ts",
+      "server": "server/main.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json --ignoreDeprecations 6.0",
+    "type-check": "tsc -p tsconfig.typecheck.json --noEmit --ignoreDeprecations 6.0",
+    "tsc:check": "tsc -p tsconfig.typecheck.json --noEmit --skipLibCheck --ignoreDeprecations 6.0",
+    "lint:canary": "eslint . --max-warnings 0",
+    "lint:fix": "eslint . --fix",
+    "test": "vitest run --passWithNoTests",
+    "format": "dprint fmt",
+    "format:check": "dprint check",
+    "check:circular-deps": "madge --circular --extensions ts --ts-config tsconfig.madge.json imports server client",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@meteorjs/rspack": "1.0.0",
+    "@rsdoctor/rspack-plugin": "1.2.3",
+    "@rspack/cli": "1.7.1",
+    "@rspack/core": "1.7.1",
+    "@types/meteor": "^2.0.0",
+    "@types/node": "25.5.0",
+    "@vitest/coverage-v8": "^4.1.2",
+    "dprint": "^0.53.2",
+    "eslint": "9.39.4",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-no-secrets": "^2.3.3",
+    "eslint-plugin-security": "^4.0.0",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "globals": "17.4.0",
+    "husky": "^9.1.7",
+    "jsdom": "^29.0.1",
+    "madge": "^8.0.0",
+    "typescript": "6.0.2",
+    "typescript-eslint": "8.58.0",
+    "vitest": "4.1.2"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.29.2",
+    "@swc/helpers": "0.5.17",
+    "bootstrap": "5.3.8",
+    "mysql2": "^3.14.0",
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^0.3.26"
+  }
+}

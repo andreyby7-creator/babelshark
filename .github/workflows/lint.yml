@@ -1,0 +1,70 @@
+---
+# Быстрая проверка при изменениях в TS/JS и конфигах линтера/форматтера.
+name: Lint
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - '**.ts'
+      - '**.tsx'
+      - '**.js'
+      - '**.jsx'
+      - 'eslint.config.mjs'
+      - 'dprint.json'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - '**.ts'
+      - '**.tsx'
+      - '**.js'
+      - '**.jsx'
+      - 'eslint.config.mjs'
+      - 'dprint.json'
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CI: 'true'
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      HUSKY: '0'
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24.12.0'
+
+      - uses: pnpm/action-setup@v5
+        with:
+          version: 10.28.2
+
+      - name: Get pnpm store path
+        id: pnpm-store
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/cache@v5
+        with:
+          path: ${{ steps.pnpm-store.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: TypeScript (для type-aware ESLint)
+        run: pnpm run type-check
+
+      - name: ESLint
+        env:
+          NODE_OPTIONS: --max-old-space-size=6144
+        run: pnpm run lint:canary
+
+      - name: Dprint
+        run: pnpm run format:check

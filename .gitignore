@@ -1,0 +1,31 @@
+# Meteor
+.meteor/local/
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Env — локальные значения; в репозитории только `.env.example`
+.env
+.env.*
+!.env.example
+
+# Tests / coverage
+coverage/
+test-results/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+
+# Meteor Modern-Tools build context directories
+_build
+*/build-assets
+*/build-chunks
+.rsdoctor
