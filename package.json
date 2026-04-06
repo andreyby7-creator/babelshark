@@ -35,7 +35,7 @@
     "@types/node": "25.5.0",
     "@vitest/coverage-v8": "^4.1.2",
     "dprint": "^0.53.2",
-    "eslint": "9.39.4",
+    "eslint": "10.2.0",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-no-secrets": "^2.3.3",
     "eslint-plugin-security": "^4.0.0",
