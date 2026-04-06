@@ -28,7 +28,7 @@
   "devDependencies": {
     "@eslint/js": "10.0.1",
     "@meteorjs/rspack": "1.0.2",
-    "@rsdoctor/rspack-plugin": "1.2.3",
+    "@rsdoctor/rspack-plugin": "1.5.7",
     "@rspack/cli": "1.7.11",
     "@rspack/core": "1.7.11",
     "@types/meteor": "^2.0.0",
