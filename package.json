@@ -52,7 +52,7 @@
     "@babel/runtime": "^7.29.2",
     "@swc/helpers": "0.5.20",
     "bootstrap": "5.3.8",
-    "mysql2": "^3.14.0",
+    "mysql2": "^3.22.0",
     "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.26"
   },
